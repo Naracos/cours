@@ -1,4 +1,4 @@
-print("Enzo Baumgartner")
+print("Enzo")
 
 
 
