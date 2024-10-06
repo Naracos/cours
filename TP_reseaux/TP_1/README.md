@@ -192,7 +192,7 @@ PS C:\Windows\system32>
 
 ##### ❓Changer d'adresse IP
 
-Je sais que l'adresse ```192.168.222``` est disponlible, je vais donc l'utilisé !
+Je sais que l'adresse ```192.168.222``` est disponible, je vais donc l'utilisé !
 
 ```powershell
 PS C:\Windows\system32> ipconfig
